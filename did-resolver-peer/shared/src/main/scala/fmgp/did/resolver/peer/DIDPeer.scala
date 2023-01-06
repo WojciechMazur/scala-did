@@ -109,8 +109,11 @@ object DIDPeer2 {
   def apply(keys: Seq[PrivateKey], service: Seq[DIDPeerServiceEncoded] = Seq.empty): DIDPeer2 =
     DIDPeer2(keys.map(keyToElement(_)) ++ service.map(ElementService(_)))
 
-  def makeAgent(keySeq: Seq[PrivateKey], service: Seq[DIDPeerServiceEncoded] = Seq.empty): DIDPeer.AgentDIDPeer =
-    new DIDPeer.AgentDIDPeer {
+  def makeIndentity(
+      keySeq: Seq[PrivateKey],
+      service: Seq[DIDPeerServiceEncoded] = Seq.empty
+  ): DIDPeer.IndentityDIDPeer =
+    new DIDPeer.IndentityDIDPeer {
       val id: DIDPeer2 = apply(keySeq, service)
       val keys: Seq[PrivateKey] = keySeq.map(k => keyKidAbsolute(k, id))
     }
@@ -169,7 +172,7 @@ object DIDPeer2 {
 object DIDPeer {
   type Array46_BASE58BTC = String // TODO  "46*BASE58BTC"
 
-  trait AgentDIDPeer extends Agent {
+  trait IndentityDIDPeer extends Indentity {
     override def id: DIDPeer
   }
 

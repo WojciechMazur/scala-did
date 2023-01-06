@@ -18,8 +18,8 @@ import fmgp.did.resolver.peer.DidPeerResolver
 
 object TrustPingTool {
 
-  val fromAgentVar: Var[Option[AgentDIDPeer]] = Var(initial = None)
-  val toAgentVar: Var[Option[AgentDIDPeer]] = Var(initial = None)
+  val fromAgentVar: Var[Option[IndentityDIDPeer]] = Var(initial = None)
+  val toAgentVar: Var[Option[IndentityDIDPeer]] = Var(initial = None)
   val encryptedMessageVar: Var[Option[EncryptedMessage]] = Var(initial = None)
 
   val responseRequestedVar = Var(initial = true)

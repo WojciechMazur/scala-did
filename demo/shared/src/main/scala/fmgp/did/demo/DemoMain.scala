@@ -11,16 +11,16 @@ import fmgp.did.example._
 import fmgp.did.resolver.peer._
 
 @main def DemoMain() = {
-  import Agent0Mediators._
+  import Indentity0Mediators._
   val program = for {
-    _ <- Console.printLine(s"Did: ${agent.id.string}")
+    _ <- Console.printLine(s"Did: ${indentity.id.string}")
     _ <- Console.printLine(s"Agreement Key: ${keyAgreement}")
     _ <- Console.printLine(s"Authentication Key: $keyAuthentication")
-    didDoc <- DidPeerResolver.didDocument(agent.id)
+    didDoc <- DidPeerResolver.didDocument(indentity.id)
     _ <- Console.printLine(s"DID Document: ${didDoc.toJson /*Pretty*/}")
-    me = agent
-    a1 = Agent1Mediators.agent
-    a2 = Agent2Mediators.agent
+    me = indentity
+    a1 = Indentity1Mediators.indentity
+    a2 = Indentity2Mediators.indentity
     msg: PlaintextMessage = PlaintextMessageClass(
       id = MsgID("1"),
       `type` = PIURI("type"),
@@ -53,7 +53,7 @@ import fmgp.did.resolver.peer._
       .run(
         program.provide(
           MyOperations.layer ++
-            Agent0Mediators.agentLayer ++
+            Indentity0Mediators.indentityLayer ++
             resolvers
         )
       )

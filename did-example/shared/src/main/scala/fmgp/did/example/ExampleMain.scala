@@ -10,8 +10,8 @@ import fmgp.did.resolver.peer._
 import fmgp.multibase._
 import fmgp.multibase.Base.Base58BTC
 import fmgp.util.Base64
-import fmgp.did.example.Agent0Mediators
-import fmgp.did.example.Agent1Mediators
+import fmgp.did.example.Indentity0Mediators
+import fmgp.did.example.Indentity1Mediators
 
 /** didExampleJVM/runMain fmgp.did.example.ExampleMain */
 @main def ExampleMain() = {
@@ -24,8 +24,8 @@ import fmgp.did.example.Agent1Mediators
   val program = for {
     _ <- Console.printLine("""### Example Main ###""".stripMargin)
     _ <- Console.printLine(message.toJsonPretty)
-    msgAfterDecrypt <- anonDecrypt(message).provideSomeLayer(Agent0Mediators.agentLayer)
-    // msgAfterDecrypt <- authDecrypt(message).provideSomeLayer(Agent0Mediators.agentLayer)
+    msgAfterDecrypt <- anonDecrypt(message).provideSomeLayer(Indentity0Mediators.indentityLayer)
+    // msgAfterDecrypt <- authDecrypt(message).provideSomeLayer(Indentity0Mediators.agentLayer)
     _ <- Console.printLine(msgAfterDecrypt.toJsonPretty)
     _ <- Console.printLine("#" * 80)
     msg2 = msgAfterDecrypt
@@ -38,7 +38,7 @@ import fmgp.did.example.Agent1Mediators
       .json
       .as[EncryptedMessage]
       .getOrElse(???)
-    afterDecryot <- authDecrypt(msg2).provideSomeLayer(Agent1Mediators.agentLayer)
+    afterDecryot <- authDecrypt(msg2).provideSomeLayer(Indentity1Mediators.indentityLayer)
   } yield ()
 
   val operations: ULayer[Operations] = ZLayer.succeed(new MyOperations())

@@ -20,7 +20,7 @@ import fmgp.crypto.error._
 
 object ResolverTool {
 
-  val agentVar: Var[Option[AgentDIDPeer]] = Var(initial = None)
+  val agentVar: Var[Option[IndentityDIDPeer]] = Var(initial = None)
   val customVar: Var[String] = Var(initial = "")
   val didDocumentVar: Var[Either[String, DIDDocument]] = Var(initial = Left(""))
 

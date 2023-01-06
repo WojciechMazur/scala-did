@@ -10,19 +10,19 @@ import fmgp.crypto._
 /** DID Comm operations */
 trait Operations {
 
-  def sign(msg: PlaintextMessage): ZIO[Agent, CryptoFailed, SignedMessage]
+  def sign(msg: PlaintextMessage): ZIO[Indentity, CryptoFailed, SignedMessage]
 
   def verify(msg: SignedMessage): ZIO[Resolver, CryptoFailed, Boolean] // SignatureVerificationFailed.type
 
   def anonEncrypt(msg: PlaintextMessage): ZIO[Resolver, DidFail, EncryptedMessage]
 
-  def authEncrypt(msg: PlaintextMessage): ZIO[Agent & Resolver, DidFail, EncryptedMessage]
+  def authEncrypt(msg: PlaintextMessage): ZIO[Indentity & Resolver, DidFail, EncryptedMessage]
 
   /** decrypt */
-  def anonDecrypt(msg: EncryptedMessage): ZIO[Agent, DidFail, Message]
+  def anonDecrypt(msg: EncryptedMessage): ZIO[Indentity, DidFail, Message]
 
   /** decrypt verify sender */
-  def authDecrypt(msg: EncryptedMessage): ZIO[Agent & Resolver, DidFail, Message]
+  def authDecrypt(msg: EncryptedMessage): ZIO[Indentity & Resolver, DidFail, Message]
 
 }
 
@@ -30,7 +30,7 @@ object Operations {
 
   def sign(
       msg: PlaintextMessage
-  ): ZIO[Operations & Agent, CryptoFailed, SignedMessage] =
+  ): ZIO[Operations & Indentity, CryptoFailed, SignedMessage] =
     ZIO.serviceWithZIO[Operations](_.sign(msg))
 
   def verify(
@@ -45,19 +45,19 @@ object Operations {
 
   def authEncrypt(
       msg: PlaintextMessage,
-  ): ZIO[Operations & Agent & Resolver, DidFail, EncryptedMessage] =
+  ): ZIO[Operations & Indentity & Resolver, DidFail, EncryptedMessage] =
     ZIO.serviceWithZIO[Operations](_.authEncrypt(msg))
 
   /** decrypt */
   def anonDecrypt(
       msg: EncryptedMessage
-  ): ZIO[Operations & Agent, DidFail, Message] =
+  ): ZIO[Operations & Indentity, DidFail, Message] =
     ZIO.serviceWithZIO[Operations](_.anonDecrypt(msg))
 
   /** decryptAndVerify */
   def authDecrypt(
       msg: EncryptedMessage
-  ): ZIO[Operations & Agent & Resolver, DidFail, Message] =
+  ): ZIO[Operations & Indentity & Resolver, DidFail, Message] =
     ZIO.serviceWithZIO[Operations](_.authDecrypt(msg))
 
 }

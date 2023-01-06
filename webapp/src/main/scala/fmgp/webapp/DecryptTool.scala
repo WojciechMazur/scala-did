@@ -20,7 +20,7 @@ import fmgp.crypto.error._
 
 object DecryptTool {
 
-  val agentVar: Var[Option[AgentDIDPeer]] = Var(initial = None)
+  val agentVar: Var[Option[IndentityDIDPeer]] = Var(initial = None)
   val dataVar: Var[String] = Var(initial = "")
   val encryptedMessageVar: Signal[Either[String, EncryptedMessage]] =
     // Var(initial = Left("<EncryptedMessage>"))

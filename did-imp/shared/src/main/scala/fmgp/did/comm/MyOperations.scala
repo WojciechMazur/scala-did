@@ -12,9 +12,9 @@ object MyOperations {
 }
 class MyOperations extends Operations {
 
-  def sign(msg: PlaintextMessage): ZIO[Agent, CryptoFailed, SignedMessage] =
+  def sign(msg: PlaintextMessage): ZIO[Indentity, CryptoFailed, SignedMessage] =
     for {
-      agent <- ZIO.service[Agent]
+      agent <- ZIO.service[Indentity]
       key = agent.keys.head // FIXME
       ret <- RawOperations.sign(key, msg)
     } yield ret
@@ -51,10 +51,10 @@ class MyOperations extends Operations {
     } yield ret
   }
 
-  def authEncrypt(msg: PlaintextMessage): ZIO[Agent & Resolver, DidFail, EncryptedMessage] = {
+  def authEncrypt(msg: PlaintextMessage): ZIO[Indentity & Resolver, DidFail, EncryptedMessage] = {
     // TODO return EncryptionFailed.type on docs
     for {
-      agent <- ZIO.service[Agent]
+      agent <- ZIO.service[Indentity]
       resolver <- ZIO.service[Resolver]
       docs <- ZIO.foreach(msg.to.toSeq.flatten)(resolver.didDocument(_))
       data = msg.toJson.getBytes
@@ -92,9 +92,9 @@ class MyOperations extends Operations {
   }
 
   /** decrypt */
-  def anonDecrypt(msg: EncryptedMessage): ZIO[Agent, DidFail, Message] = {
+  def anonDecrypt(msg: EncryptedMessage): ZIO[Indentity, DidFail, Message] = {
     for {
-      agent <- ZIO.service[Agent]
+      agent <- ZIO.service[Indentity]
       did = agent.id
       kidsNeeded = msg.recipients.map(_.header.kid)
       keys = agent.keys
@@ -109,9 +109,9 @@ class MyOperations extends Operations {
   }
 
   /** decrypt verify sender */
-  def authDecrypt(msg: EncryptedMessage): ZIO[Agent & Resolver, DidFail, Message] =
+  def authDecrypt(msg: EncryptedMessage): ZIO[Indentity & Resolver, DidFail, Message] =
     for {
-      agent <- ZIO.service[Agent]
+      agent <- ZIO.service[Indentity]
       did = agent.id
       kidsNeeded = msg.recipients.map(_.header.kid)
       keys = agent.keys
